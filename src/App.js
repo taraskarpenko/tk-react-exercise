@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import { Route, Switch } from 'react-router-dom'
+import NotFound from './NotFound';
+import About from './About';
+import SideBar from './SideBar';
+import RecipeDetails from './Recipe/RecipeDetails';
+import EditRecipe from './Recipe/EditRecipe';
+import { AppWraper } from './Styles';
 
-function App() {
+const App = () => {
+  const [update, setUpdate] = useState(false)
+
+  useEffect(() => {
+    setUpdate(false)
+  }, [update])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppWraper >
+      <SideBar update={update} />
+      <Switch>
+        <Route exact path='/' component={About} />
+        <Route exact path="/recipe/new" render={() => <EditRecipe update={setUpdate} />} />
+        <Route exact path="/recipe/:recipe_id" render={() => <RecipeDetails update={setUpdate} />} />
+        <Route path="*" component={NotFound} />
+      </Switch>
+    </AppWraper >
   );
 }
 
